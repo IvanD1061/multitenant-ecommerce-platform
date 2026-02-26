@@ -22,7 +22,7 @@ export default function Home() {
         <Progress value = {25}/>
       </div>
       <div>
-        <Textarea value = "i am a test area" />
+        <Textarea placeholder = "Ivan you were at 1:13:48 in the video:" />
       </div>
       <div>
         <Checkbox />
