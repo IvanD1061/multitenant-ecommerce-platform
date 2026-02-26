@@ -106,7 +106,7 @@ export const Navbar = () => {
             <Button
             variant="ghost"
             className="size-12 border-transparent bg-white"
-            onClick={() => setIsSideBarOpen(true)}
+            onClick={() => setIsSideBarOpen(false)}
             
             >
                 <MenuIcon/>
