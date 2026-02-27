@@ -1,4 +1,5 @@
 import configPromise from '@payload-config'
+import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 
 
@@ -12,7 +13,7 @@ export const GET = async () => {
     collection: 'categories',
   })
 
-  return Response.json(data)
+  return NextResponse.json(data)
 }
-
+  
 //http://localhost:3000/my-route
