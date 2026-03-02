@@ -31,7 +31,7 @@ const NavbarItem = ({
         asChild
             variant="outline"
             className= {cn( 
-                "bg-transparent hover:bg-transparent rounded-full hover:border-primary border-transparent px-3.5 text-lg",
+                "bg-transparent hover:bg-transparent rounded-full hover:border-primary border-transparent px-5 text-lg",
                 isActive && "bg-black text-white hover:bg-black hover:text-white",
             )}
         >
@@ -86,7 +86,7 @@ export const Navbar = () => {
             <Button
             asChild
             variant="secondary"
-            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-white hover:bg-purple-500 transition-colors text-lg "
+            className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-white hover:bg-yellow-100 transition-colors text-lg "
             >
                 <Link href ="/sign in " >
                 Login 
@@ -95,7 +95,7 @@ export const Navbar = () => {
             <Button
             asChild
              variant="secondary"
-             className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-pink-400 transition-colors text-lg "
+             className="border-l border-t-0 border-b-0 border-r-0 px-12 h-full rounded-none bg-black text-white hover:bg-blue-200 transition-colors text-lg "
              >
                 <Link href ="/sign up" >
                     Start Selling
