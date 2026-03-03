@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { TRPCProvider, TRPCReactProvider } from "@/trpc/client";
+import { Toaster } from "@/components/ui/sonner";
 
 
 const dmSans = DM_Sans({
@@ -26,6 +27,7 @@ export default function RootLayout({
       >
         <TRPCReactProvider>
         {children}
+        <Toaster/>
         </TRPCReactProvider>
 
       </body>
