@@ -7,7 +7,8 @@ const categories = [
       slug: "all",
     },
     {
-      name: "Business & Money",
+      
+      name: "Lexi's Store",
       color: "#FFB347",
       slug: "business-money",
       subcategories: [
