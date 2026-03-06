@@ -12,6 +12,7 @@ interface Props{
         category : string;
     }>,
     searchParams: Promise<SearchParams>;
+    
 }
 
 const Page = async ({params,searchParams }: Props) => {
