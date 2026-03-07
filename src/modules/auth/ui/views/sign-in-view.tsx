@@ -131,7 +131,7 @@ export const SignInView = () => {
 
             <div className="h-screen w-full lg:col-span-2 hidden lg:block"
             style={{
-                backgroundImage: "url('/Animals.png')",
+                backgroundImage: "url('/bg-tiger.png')",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}
