@@ -1,6 +1,6 @@
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
-import { headers as getHeaders, cookies as getCookies  } from "next/headers";
+import { headers as getHeaders, cookies as getCookies } from "next/headers";
 import z from "zod"
 
 import { loginScheme, registerScheme } from "../schemes";
@@ -8,17 +8,17 @@ import { generateAuthCookie } from "../utils";
 
 export const authRouter = createTRPCRouter({
 
-    session: baseProcedure.query(async ({ctx}) => {
+    session: baseProcedure.query(async ({ ctx }) => {
         const headers = await getHeaders();
 
-        const session = await ctx.db.auth({headers});
+        const session = await ctx.db.auth({ headers });
 
         return session;
     }),
 
     register: baseProcedure
         .input(registerScheme)
-        .mutation(async ({input, ctx}) => {
+        .mutation(async ({ input, ctx }) => {
             const existingData = await ctx.db.find({
                 collection: "users",
                 limit: 1,
@@ -28,12 +28,35 @@ export const authRouter = createTRPCRouter({
                     },
                 }
             })
+
+            const existingUser = existingData.docs[0];
+
+            if (existingUser) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Username already Taken",
+                })
+            }
+
+            const tenant = await ctx.db.create({
+                collection: "tenants",
+                data: {
+                    name: input.username,
+                    slug: input.username,
+                    stripeAccountId: "mock"
+                }
+            })
+
+
             const user = await ctx.db.create({
                 collection: "users",
                 data: {
                     email: input.email,
                     username: input.username,
-                    password: input.password
+                    password: input.password,
+                    tenants: [{
+                        tenant: tenant.id,
+                    }]
                 }
             });
             const data = await ctx.db.login({
@@ -43,7 +66,7 @@ export const authRouter = createTRPCRouter({
                     password: input.password
                 }
             });
-            if(!data.token) {
+            if (!data.token) {
                 throw new TRPCError({
                     code: "UNAUTHORIZED",
                     message: "Failed to Login",
@@ -55,9 +78,9 @@ export const authRouter = createTRPCRouter({
             })
         }),
 
-        login: baseProcedure
+    login: baseProcedure
         .input(loginScheme)
-        .mutation(async ({input, ctx}) => {
+        .mutation(async ({ input, ctx }) => {
             const data = await ctx.db.login({
                 collection: "users",
                 data: {
@@ -65,7 +88,7 @@ export const authRouter = createTRPCRouter({
                     password: input.password
                 }
             });
-            if(!data.token) {
+            if (!data.token) {
                 throw new TRPCError({
                     code: "UNAUTHORIZED",
                     message: "Failed to Login",
