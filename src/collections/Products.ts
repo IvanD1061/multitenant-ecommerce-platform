@@ -17,6 +17,7 @@ export const Products: CollectionConfig = {
 
     admin: {
         useAsTitle: "name",
+        description: "You must verify account before creating products"
     },
     fields: [
         {
