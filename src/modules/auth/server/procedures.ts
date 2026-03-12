@@ -5,6 +5,7 @@ import z from "zod"
 
 import { loginScheme, registerScheme } from "../schemes";
 import { generateAuthCookie } from "../utils";
+import { stripe } from "@/lib/stripe";
 
 export const authRouter = createTRPCRouter({
 
@@ -37,13 +38,21 @@ export const authRouter = createTRPCRouter({
                     message: "Username already Taken",
                 })
             }
+            const account = await stripe.accounts.create({});
+
+            if (!account) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Failed to create stripe account",
+                })
+            }
 
             const tenant = await ctx.db.create({
                 collection: "tenants",
                 data: {
                     name: input.username,
                     slug: input.username,
-                    stripeAccountId: "mock"
+                    stripeAccountId: account.id,
                 }
             })
 
