@@ -62,7 +62,6 @@ export const Tenants: CollectionConfig = {
                 update: ({ req }) => isSuperAdmin(req.user),
             },
             admin: {
-                readOnly: true,
                 description: " You cannot create products untill you submit your Stripe details",
             }
 
