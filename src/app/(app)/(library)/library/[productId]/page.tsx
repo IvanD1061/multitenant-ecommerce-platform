@@ -10,6 +10,7 @@ interface Props {
         productId: string;
     }>
 }
+export const dynamic = "force-dynamic"
 
 
 const page = async ({ params }: Props) => {
