@@ -4,6 +4,8 @@ import { getQueryClient, trpc } from '@/trpc/server'
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import React from 'react'
 
+export const dynamic = "force-dynamic"
+
 const page = async () => {
     const queryClient = getQueryClient();
     void queryClient.prefetchInfiniteQuery(trpc.library.getMany.infiniteQueryOptions({

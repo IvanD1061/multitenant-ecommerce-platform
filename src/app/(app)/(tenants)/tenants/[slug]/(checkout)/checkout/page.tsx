@@ -4,6 +4,8 @@ interface PageProps {
     params: Promise<{ slug: string }>
 }
 
+export const dynamic = "force-dynamic"
+
 const page = async ({ params }: PageProps) => {
     const { slug } = await params
     return <CheckoutView tenantSlug={slug} />
