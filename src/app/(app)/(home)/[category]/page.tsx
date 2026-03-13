@@ -24,9 +24,10 @@ const Page = async ({ params, searchParams }: Props) => {
     void queryClient.prefetchInfiniteQuery(trpc.products.getMany.infiniteQueryOptions({
         ...filters,
         category,
-        limit: DEFAULT_LIMIT
+        limit: DEFAULT_LIMIT,
+    }, {
+        getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
     }))
-
 
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
