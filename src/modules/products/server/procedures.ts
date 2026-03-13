@@ -2,7 +2,7 @@
 import { Category, Media, Tenant } from "@/payload-types";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { headers as getHeaders } from "next/headers";
-import type { Where, Sort } from "payload"
+import type { Where, Sort } from "payload";
 import z from "zod"
 import { sortValues } from "../search-params";
 import { DEFAULT_LIMIT } from "@/constants";
@@ -117,6 +117,7 @@ export const ProductsRouter = createTRPCRouter({
       z.object({
 
         cursor: z.number().default(1),
+        search: z.string().nullable().optional(),
         limit: z.number().default(DEFAULT_LIMIT),
         category: z.string().nullable().optional(),
         minPrice: z.string().nullable().optional(),
@@ -212,6 +213,11 @@ export const ProductsRouter = createTRPCRouter({
       if (input.tags && input.tags.length > 0) {
         where["tags.name"] = {
           in: input.tags,
+        }
+      }
+      if (input.search) {
+        where["name"] = {
+          like: input.search,
         }
       }
 

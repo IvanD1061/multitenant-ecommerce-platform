@@ -9,34 +9,40 @@ import { DEFAULT_BG_COLOR } from "@/modules/home/constants";
 import { SubcategoryMenu } from "./subcategory-menu";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { BreadcrumbNavigation } from "./breadcrumb-navigation";
+import { useProductFilters } from "@/modules/products/hooks/use-product-filters";
 
 
 export const SearchFilters = () => {
     const trpc = useTRPC();
-    const {data} = useSuspenseQuery(trpc.categories.getMany.queryOptions());
+    const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
+    const [filter, setFilter] = useProductFilters();
 
     const params = useParams();
     const categoryParam = params.category as string | undefined;
     const activeCategory = categoryParam || "all";
 
-    const activeCategoryData= data.find((category) => category.slug === activeCategory);
+    const activeCategoryData = data.find((category) => category.slug === activeCategory);
 
     const activeCategoryColor = activeCategoryData?.color || DEFAULT_BG_COLOR
     const activeCategoryName = activeCategoryData?.name || null;
 
     const activeSubcategory = params.subcategory as string | undefined;
-    const activeSubcategoryName = activeCategoryData?.subcategories?.find((subcategory) => subcategory.slug === activeSubcategory)?.name || null; 
+    const activeSubcategoryName = activeCategoryData?.subcategories?.find((subcategory) => subcategory.slug === activeSubcategory)?.name || null;
 
 
     return (
-        <div className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full"style={{background:activeCategoryColor}}>
-            <SearchInput/>
+        <div className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full" style={{ background: activeCategoryColor }}>
+
+            <SearchInput defaultValue={filter.search} onChange={(value) => setFilter({
+                search: value
+            })} />
+
             <div className="hidden lg:block">
-                <Categories data={data}/>
+                <Categories data={data} />
             </div>
-            <BreadcrumbNavigation activeCategoryName = {activeCategoryName}
-            activeCategory = {activeCategory}
-            activeSubcategoryName = {activeSubcategoryName}/>
+            <BreadcrumbNavigation activeCategoryName={activeCategoryName}
+                activeCategory={activeCategory}
+                activeSubcategoryName={activeSubcategoryName} />
         </div>
     );
 };
@@ -44,10 +50,10 @@ export const SearchFilters = () => {
 export const SearchFiltersSkeleton = () => {
 
     return (
-        <div className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full" style={{backgroundColor: "#F5F5F5"}}>
-            <SearchInput disabled/>
+        <div className="px-4 lg:px-12 py-8 border-b flex flex-col gap-4 w-full" style={{ backgroundColor: "#F5F5F5" }}>
+            <SearchInput disabled defaultValue={undefined} />
             <div className="hidden lg:block">
-                <div className="h-11"/>
+                <div className="h-11" />
             </div>
         </div>
     );
