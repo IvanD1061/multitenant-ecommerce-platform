@@ -1,6 +1,6 @@
-import {cookies as getCookies} from "next/headers"
+import { cookies as getCookies } from "next/headers"
 
-interface Props{
+interface Props {
     prefix: string;
     value: string;
 
@@ -11,10 +11,10 @@ export const generateAuthCookie = async ({
     value,
 }: Props) => {
     const cookies = await getCookies();
-            cookies.set({ 
-                name: `${prefix}-token`,
-                value: value,
-                httpOnly:true,
-                path: "/",
-            }); 
+    cookies.set({
+        name: `${prefix}-token`,
+        value: value,
+        httpOnly: true,
+        path: "/",
+    });
 }
