@@ -1,8 +1,7 @@
 import { isSuperAdmin } from "@/lib/access";
 import { Tenant } from "@/payload-types";
+import { UploadFeature, lexicalEditor } from "@payloadcms/richtext-lexical";
 import type { CollectionConfig } from "payload";
-import { relationship } from "payload/shared";
-import { boolean } from "zod";
 
 export const Products: CollectionConfig = {
     slug: "products",
@@ -12,7 +11,8 @@ export const Products: CollectionConfig = {
             const tenant = req.user?.tenants?.[0]?.tenant as Tenant
 
             return Boolean(tenant?.stripeDetailsSubmitted)
-        }
+        },
+        delete: ({ req }) => isSuperAdmin(req.user)
     },
 
     admin: {
@@ -28,7 +28,7 @@ export const Products: CollectionConfig = {
         {
             name: "description",
             //TODO
-            type: "text",
+            type: "richText",
         },
         {
             name: "price",
@@ -56,6 +56,11 @@ export const Products: CollectionConfig = {
             relationTo: "media",
         },
         {
+            name: "cover",
+            type: "upload",
+            relationTo: "media"
+        },
+        {
             name: "refundPolicy",
             type: "select",
             options: ["30 days", "15 days", "10 days", "5 days", " 1 day", "no-refunds"],
@@ -63,10 +68,30 @@ export const Products: CollectionConfig = {
         },
         {
             name: "content",
-            type: "textarea",
+            type: "richText",
             admin: {
                 description:
                     "Protected Content oly visable to customrers after purchase. Add product documentation, downloadable files, getting started guides, and bonus materials. Supports Markdown formatting"
+            }
+        },
+        {
+
+            name: "isPrivate",
+            label: "Private",
+            defaultValue: false,
+            type: "checkbox",
+            admin: {
+                description: "If Checked, this product will not be shown on the public storefront"
+            }
+        },
+        {
+
+            name: "isArchived",
+            label: "Archive",
+            defaultValue: false,
+            type: "checkbox",
+            admin: {
+                description: " If checked, this product will be archived"
             }
         }
     ],
