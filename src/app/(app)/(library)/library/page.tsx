@@ -9,7 +9,9 @@ export const dynamic = "force-dynamic"
 const page = async () => {
     const queryClient = getQueryClient();
     void queryClient.prefetchInfiniteQuery(trpc.library.getMany.infiniteQueryOptions({
-        limit: DEFAULT_LIMIT
+        limit: DEFAULT_LIMIT,
+    }, {
+        getNextPageParam: (lastPage) => lastPage.nextPage ?? undefined,
     }))
     return (
         <HydrationBoundary state={dehydrate(queryClient)}>
