@@ -20,6 +20,7 @@ export const generateAuthCookie = async ({
             sameSite: "none",
             domain: process.env.NEXT_PUBLIC_ROOT_DOMAIN,
             secure: true
+
         })
     });
 }
